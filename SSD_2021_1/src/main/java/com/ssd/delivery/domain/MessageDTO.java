@@ -48,11 +48,9 @@ public class MessageDTO implements Serializable
 	public void setMessageDate(String messageDate) {
 		this.messageDate = messageDate;
 	}
-
 	public int getDmNo() {
 		return dmNo;
 	}
-
 	public void setDmNo(int dmNo) {
 		this.dmNo = dmNo;
 	}

@@ -13,8 +13,8 @@
 
 	<update id="updateMessage" parameterType="MessageDTO">
     UPDATE MESSAGE SET
-      CONTENT = #{languagePreference}, 
-      MESSAGEDATE = #{favouriteCategoryId}, 
+      CONTENT = #{content}, 
+      MESSAGEDATE = #{messageData}, 
       receiverUsername = #{receiverUsername}, 
       senderUsername = #{senderUsername}
     WHERE SENDERUSERNAME = #{username}
