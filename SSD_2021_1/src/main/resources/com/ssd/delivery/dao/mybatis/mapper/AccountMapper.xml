@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssd.delivery.dao.mybatis.mapper.AccountMapper">
+  <cache />
+   
+  <update id="updateAccount" parameterType="AccountDTO"> 
+    UPDATE ACCOUNT SET 
+      EMAIL = #{email},
+      FIRSTNAME = #{firstName},
+      LASTNAME = #{lastName},
+      ADDRESS = #{address},
+      PHONE = #{phone},
+      LANGUAGEPREFERENCE = #{languagePreference},
+      FAVORITEUSER = #{favoriteUser},
+      CARINFO = #{carInfo} 
+    WHERE USERNAME = #{username}
+  </update>
+  
+  <insert id="insertAccount" parameterType="AccountDTO">
+    INSERT INTO ACCOUNT (USERNAME, PASSWORD, EMAIL, FIRSTNAME, LASTNAME, ADDRESS, PHONE, STATUS, CARINFO) 
+    VALUES (#{username}, #{password}, #{email}, #{firstName}, #{lastName}, #{address}, #{phone}, #{status}, #{carInfo})
+  </insert>
+  
+  <delete id="deleteAccount" parameterType="String">
+	DELETE FROM ACCOUNT 
+	WHERE USERNAME = #{username}
+	</delete>
+	
+	<select id="getUserListByAuctionId" resultType="AccountDTO">
+    SELECT * 
+    FROM ACCOUNT JOIN AUCTION
+    WHERE AUCTIONID = #{auctionId}
+	</select>
+	
+	<select id="getUserList" resultType="AccountDTO">
+    SELECT * 
+    FROM ACCOUNT
+	</select>
+	
+	<select id="getUser" resultType="AccountDTO">
+    SELECT * 
+    FROM ACCOUNT
+    WHERE username = #{username}
+	</select>
+
+	<select id="getUserListByCPId" resultType="AccountDTO">
+    SELECT * 
+    FROM ACCOUNT JOIN COPURCHASING
+    WHERE coPurchasingId = #{coPurchasingId}
+	</select>
+	
+	<select id="getFavoriteUserList" resultType="AccountDTO">
+    SELECT FAVORITEUSERNAME
+    FROM ACCOUNT JOIN FAVORITEUSER USING(username)
+    WHERE username = #{username}
+	</select>
+	
+	<select id="findUser" resultType="AccountDTO">
+    SELECT * 
+    FROM ACCOUNT
+    WHERE username = #{username}
+	</select>
+	
+</mapper>

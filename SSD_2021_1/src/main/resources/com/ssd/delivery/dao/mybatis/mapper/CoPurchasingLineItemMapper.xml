@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.ssd.delivery.dao.mybatis.mapper.CoPurchasingLineItemMapper">
+
+	<cache />
+
+	<insert id="insertCPLineItem">
+		INSERT INTO copurchasinglineitem
+		(linenum, copurchasingid, username)
+		VALUES (cplinenum_seq.nextval, #{coPurchasingId}, #{username} )
+	</insert>
+	
+	<insert id="insertCPLineItem2">
+		INSERT INTO copurchasinglineitem
+		(linenum, copurchasingid, username)
+		VALUES (cplinenum_seq.nextval, coPurchasingID_seq.currval, #{username} )
+	</insert>
+
+	<select id="getCPLineItemsByCPId"
+		resultType="CoPurchasingLineItemDTO">
+		SELECT
+		linenum, copurchasingid, username
+		FROM copurchasingLINEITEM
+		WHERE copurchasingid = #{coPurchasingId}
+	</select>
+
+	<delete id="deleteCPLineItem" parameterType="int">
+		DELETE FROM coPurchasingLineItem
+		WHERE coPurchasingId = #{coPurchasingId}
+	</delete>
+
+ <delete id="deleteCPLineItemByUsername" parameterType="String">
+		DELETE FROM CoPurchasingLineItem
+		WHERE username = #{username}
+	</delete>
+</mapper>

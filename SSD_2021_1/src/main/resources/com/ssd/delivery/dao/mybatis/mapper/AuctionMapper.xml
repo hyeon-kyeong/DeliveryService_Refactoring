@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssd.delivery.dao.mybatis.mapper.AuctionMapper">
+
+	<insert id="insertAuction" parameterType="AuctionDTO">
+      insert into auction
+      	(auctionid, enddate, servicedate, startprice, finalprice, address1, 	
+      	address2, successfulbidder, delivery, username)	
+      	values
+      	(auctionId_seq.nextval, #{endDate}, #{serviceDate}, #{startPrice},
+      	null,#{address1}, #{address2}, null, 
+      	#{delivery}, #{username})
+	</insert>
+
+	<update id="updateAuction" parameterType="AuctionDTO">
+    update auction set
+    	successfulBidder = #{username},
+    	finalprice = #{finalPrice}
+    	where auctionId = #{auctionId}
+	</update>
+	
+	
+	<update id="updateCurrentPriceAuction" parameterType="int">
+    update auction set
+    	currentprice = #{currentPrice}
+    	where auctionId = #{auctionId}
+	</update>
+	
+	
+	<delete id="deleteAuction" parameterType="int">
+	DELETE FROM auction 
+	WHERE auctionid = #{auctionId}
+	</delete>
+	
+	
+	<select id="getAuctionById" resultType="AuctionDTO">
+    select * from auction
+    where  auctionId = #{auctionId}
+	</select>
+	
+	<select id="getAuctionByDeliveryId" resultType="AuctionDTO">
+    select * from auction
+    where  delivery = #{delivery}
+	</select>
+	
+	<select id="getAuctionByUsername" resultType="AuctionDTO">
+   	select * from auction
+    where username = #{username}
+	</select>
+	
+	<select id="getAuctionList" resultType="AuctionDTO">
+    select * from auction
+	</select>
+	
+	<select id="getAuctionIdByUsername" resultType="AuctionDTO">
+    select auctionId from auction where username = #{username}
+	</select>
+	
+  
+</mapper>
