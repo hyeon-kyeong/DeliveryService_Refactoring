@@ -215,7 +215,7 @@
 					<button type="submit" id="join-submit" class="button primary">
 						회원가입<i class="fa fa-check spaceLeft"></i>
 					</button>
-					<button type="button" id="join-cancle" class="button" onclick="location.href='/'">
+					<button type="button" id="join-cancle" onclick="location.href='/'">
 						가입취소<i class="fa fa-times spaceLeft"></i>		
 					</button>
 					<!-- <a class="button" href="/">가입취소<i class="fa fa-times spaceLeft"></i></a> -->
