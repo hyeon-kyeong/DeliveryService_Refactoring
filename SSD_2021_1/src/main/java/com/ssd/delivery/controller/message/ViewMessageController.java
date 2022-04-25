@@ -132,8 +132,8 @@ public class ViewMessageController {
 		List<MessageDTO> messageReceiveContents = delivery.getMessageContentByReceiverUsername(receiver, username);
 		
 		messageContents.addAll(messageReceiveContents);
-		messageContents.sort((d1,d2) -> d1.getMessageDate().compareTo(d2.getMessageDate()));
-
+		messageContents.sort((d1,d2) -> String.valueOf(d1.getDmNo()).compareTo(String.valueOf(d2.getDmNo())));
+		
 		mav.addObject("username", username);
 		mav.addObject("receiver", receiver);
 		mav.addObject("contentList", messageContents);
@@ -188,7 +188,7 @@ public class ViewMessageController {
 		List<MessageDTO> messageReceiveContents = delivery.getMessageContentByReceiverUsername(receiver, username);
 		
 		messageContents.addAll(messageReceiveContents);
-		messageContents.sort((d1,d2) -> d1.getMessageDate().compareTo(d2.getMessageDate()));
+		messageContents.sort((d1,d2) -> String.valueOf(d1.getDmNo()).compareTo(String.valueOf(d2.getDmNo())));
 		
 		mav.addObject("username", username);
 		mav.addObject("receiver", receiver);

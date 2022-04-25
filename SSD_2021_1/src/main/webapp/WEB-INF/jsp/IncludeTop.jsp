@@ -70,7 +70,7 @@
 				<c:if test="${userSession.username ne null}">
 
 					<li class="nav-item"><li><a href="/delivery/mypage.do?username=${userSession.username}">📰 마이페이지</a></li>
-					<li><a href="/delivery/message.do">💬 DM</a></li>
+					<li><a href="/delivery/message.do">📬 DM</a></li>
 					
 				</c:if>
 				<c:if test="${userSession.status eq 0}">
