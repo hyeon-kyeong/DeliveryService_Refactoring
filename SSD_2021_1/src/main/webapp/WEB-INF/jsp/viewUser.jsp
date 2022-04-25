@@ -21,7 +21,7 @@
 				<input type="hidden" style="width: 800px" class="form-control"
 					name="tradeCount" value="0" id="tradeCount">
 			</div>
-			<c:if test="${m ne null}">
+			<c:if test="${m ne null}"> 
 				<p>
 					<b>※ ${m.message }</b>
 				</p>
