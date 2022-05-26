@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+//import com.google.gson.Gson;
+//import com.google.gson.GsonBuilder;
+//import com.google.gson.JsonIOException;
+import com.ssd.delivery.controller.UserSession;
 import com.ssd.delivery.domain.AccountDTO;
 import com.ssd.delivery.domain.MessageDTO;
 import com.ssd.delivery.service.DeliveryFacade;
@@ -40,7 +46,9 @@ public class ViewMessageController {
 		
 		mav.addObject("sender", username);
 		mav.addObject("receiversList", receivers);
-		mav.setViewName("messageForm");
+		mav.addObject("userSession", account);
+//		mav.setViewName("messageForm");
+		mav.setViewName("chatTest");
 				
 		return mav;
 	}
@@ -198,4 +206,17 @@ public class ViewMessageController {
 		return mav;
 	}
 	
+//	@Autowired
+//	private UserSession cSession;
+//	
+//	@RequestMapping("chatSession.do")
+//	public void chatSession( HttpServletResponse response) throws JsonIOException, IOException{
+//		
+//		ArrayList<Integer> chatSessionList = cSession.getAccount();
+//		System.out.println(chatSessionList);
+//		response.setContentType("application/json; charset=utf-8");
+//
+//		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+//		gson.toJson(chatSessionList,response.getWriter());
+//	}
 }
