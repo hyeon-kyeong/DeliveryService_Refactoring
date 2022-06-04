@@ -47,4 +47,6 @@ public interface AccountMapper {
 	
 	AccountDTO getUser(String username);
 
+	String getSaltByUsername(String username);
+
 }

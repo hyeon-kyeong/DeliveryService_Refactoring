@@ -1,16 +1,22 @@
 package com.ssd.delivery.controller.account;
 
+import java.security.PrivateKey;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.ssd.delivery.domain.*;
 import com.ssd.delivery.service.AccountFormValidator;
 import com.ssd.delivery.service.DeliveryFacade;
@@ -26,19 +32,33 @@ public class AccountFormController {
 	private AccountFormValidator validator;
 	
 	@GetMapping
-	public String showForm() { 
+	public String showForm(@ModelAttribute("accountForm") AccountDTO account,
+			RedirectAttributes redirectAttrivutes,
+			HttpServletRequest request, ModelMap model) throws Exception { 
+		
+		EncryptionAndHashing.initRsa(request);
+		
 		return "register";
 	}
 
 	@PostMapping
-	public String onSubmit(HttpServletRequest request, HttpSession session,
+	public String onSubmit(HttpServletRequest request,
+			HttpSession session,
 			@ModelAttribute("accountForm") AccountDTO account,
+			@RequestParam("PASSWORD") String password, 
 			BindingResult result) throws Exception {
 		
-
 		validator.validate(account, result);
 		if (result.hasErrors()) return "register";
+		
+		PrivateKey privateKey = (PrivateKey) session
+				.getAttribute(EncryptionAndHashing.getRSA_WEB_KEY());
 
+		// 복호화
+		password = EncryptionAndHashing.decryptRsa(privateKey, password);
+
+		// 개인키 삭제
+		session.removeAttribute(EncryptionAndHashing.getRSA_WEB_KEY());
 		
 		try {
 			AccountDTO existingUser = delivery.findUser(account.getUsername());
@@ -47,6 +67,14 @@ public class AccountFormController {
 				String address = account.getAddress2() + account.getPostcode() + account.getDetailAddress() + account.getExtraAddress();
 				account.setAddress(address);
 				account.setStatus(1);
+				
+				// password 해시 적용
+				String salt = EncryptionAndHashing.generateSalt();
+				account.setSalt(salt);
+				
+				password = EncryptionAndHashing.getEncrypt(password, salt.getBytes());
+				account.setPassword(password);
+				
 				delivery.insertAccount(account);
 			}
 		}
@@ -60,4 +88,5 @@ public class AccountFormController {
 		
 		return "redirect:/";
 	}
+	
 }

@@ -27,4 +27,6 @@ public interface AccountDao {
 	
 	AccountDTO findUser(String username) throws DataAccessException;
 
+	String getSaltByUsername(String username);
+
 }

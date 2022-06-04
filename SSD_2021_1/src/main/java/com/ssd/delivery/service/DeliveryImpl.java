@@ -89,6 +89,10 @@ public class DeliveryImpl implements DeliveryFacade {
 	public AccountDTO findUser(String username) {
 		return accountDao.findUser(username);
 	}
+	
+	public String getSaltByUsername(String username) {
+		return accountDao.getSaltByUsername(username);
+	}
 
 	// Auction
 	public void insertAuction(AuctionDTO auction) {

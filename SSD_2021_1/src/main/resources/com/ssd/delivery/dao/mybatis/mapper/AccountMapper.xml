@@ -18,8 +18,8 @@
   </update>
   
   <insert id="insertAccount" parameterType="AccountDTO">
-    INSERT INTO ACCOUNT (USERNAME, PASSWORD, EMAIL, FIRSTNAME, LASTNAME, ADDRESS, PHONE, STATUS, CARINFO) 
-    VALUES (#{username}, #{password}, #{email}, #{firstName}, #{lastName}, #{address}, #{phone}, #{status}, #{carInfo})
+    INSERT INTO ACCOUNT (USERNAME, PASSWORD, EMAIL, FIRSTNAME, LASTNAME, ADDRESS, PHONE, STATUS, CARINFO, SALT) 
+    VALUES (#{username}, #{password}, #{email}, #{firstName}, #{lastName}, #{address}, #{phone}, #{status}, #{carInfo}, #{salt})
   </insert>
   
   <delete id="deleteAccount" parameterType="String">
@@ -58,6 +58,12 @@
 	
 	<select id="findUser" resultType="AccountDTO">
     SELECT * 
+    FROM ACCOUNT
+    WHERE username = #{username}
+	</select>
+	
+	<select id="getSaltByUsername" resultType="String">
+	SELECT SALT
     FROM ACCOUNT
     WHERE username = #{username}
 	</select>

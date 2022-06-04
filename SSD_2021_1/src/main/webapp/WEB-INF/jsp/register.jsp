@@ -3,32 +3,67 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ include file="IncludeTop.jsp"%>
+
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/js/rsa/rsa.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/js/rsa/jsbn.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/js/rsa/prng4.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/js/rsa/rng.js"></script>
+
+<script type="text/javascript">
+	function frmCheck() {
+		var pwd = $("#password").val();
+		var pwd2 = $("#password2").val();
+		
+		//RSA 암호화
+		var rsa = new RSAKey();
+		rsa.setPublic($('#RSAModulus').val(), $('#RSAExponent').val());
+
+		$("#PASSWORD").val(rsa.encrypt(pwd));
+		$("#PASSWORD2").val(rsa.encrypt(pwd2));
+
+		password.val("");
+		password2.val("");
+
+	}
+</script>
+
 <!-- Main -->
 <div id="main">
 	<div class="inner">
 		<h1>📋 Register Page</h1>
 		<div class="col-sm-6 col-md-offset-3">
 			<form:form modelAttribute="accountForm"
-				action="/delivery/newUserSubmitted.do" method="post">
-				<div class="form-group"> 
+				action="/delivery/newUserSubmitted.do" method="post" onsubmit="return frmCheck();">
+				<div class="form-group">
 					<label for="account.username" style="font-size: 24px">Username</label>
 					<input type="text" style="width: 800px" class="form-control"
 						name="username" value="${userSession.username}"
 						placeholder="로그인 시 사용할 이름을 입력해 주세요.">
 					<form:errors path="username" style="color:#E16A93; font-size:28px;" />
 				</div>
+
+				<input type="hidden" id="RSAModulus" value="${RSAModulus}">
+				<input type="hidden" id="RSAExponent" value="${RSAExponent}">
+				<input type="hidden" id="PASSWORD" name="PASSWORD">
+				<input type="hidden" id="PASSWORD2" name="PASSWORD2">
+
 				<div class="form-group">
-					<label for="password1" style="font-size: 24px">Password</label> <input
-						type="password" style="width: 800px" class="form-control"
-						name="password" value="${userSession.password}"
+					<label for="password1" style="font-size: 24px">Password</label>
+					<input type="password" style="width: 800px" id="password"
+						class="form-control" name="password" 
 						placeholder="비밀번호를 입력해 주세요.">
 					<form:errors path="password" style="color:#E16A93; font-size:28px;" />
 				</div>
 				<div class="form-group">
-					<label for="password2" style="font-size: 24px">Password
-						Check</label> <input type="password" style="width: 800px"
+					<label for="password2" style="font-size: 24px">Password Check</label>
+					<input type="password" style="width: 800px" id="password2"
 						class="form-control" name="password2" placeholder="비밀번호를 입력해 주세요.">
-					<form:errors path="password2" style="color:#E16A93; font-size:28px;" />
+					<form:errors path="password2"
+						style="color:#E16A93; font-size:28px;" />
 				</div>
 				<div class="form-group row">
 					<label for="firstName" class="col-lg-2 col-form-label"
@@ -60,19 +95,19 @@
 					<label for="address" style="font-size: 24px">Address</label> <input
 						type="hidden" style="width: 800px" class="form-control"
 						name="address" value="${userSession.address}">
-					
+
 					<!-- 도로명주소 api 활용 -->
 					<input type="text" id="sample2_postcode" name="postcode"
 						placeholder="우편번호"> <input type="button"
 						class="button small" onclick="sample2_execDaumPostcode()"
 						value="우편번호 찾기" name="postcode"> <br> <input
 						type="text" id="sample2_address" placeholder="주소" name="address2">
-						<form:errors path="address2" style="color:#E16A93; font-size:28px;" />
+					<form:errors path="address2" style="color:#E16A93; font-size:28px;" />
 					<br> <input type="text" id="sample2_detailAddress"
 						placeholder="상세주소" name="detailAddress"> <input
 						type="text" id="sample2_extraAddress" placeholder="(동)"
 						name="extraAddress">
-					
+
 					<!-- iOS에서는 position:fixed 버그가 있음, 적용하는 사이트에 맞게 position:absolute 등을 이용하여 top,left값 조정 필요 -->
 					<div id="layer"
 						style="display: none; position: fixed; overflow: hidden; z-index: 1; -webkit-overflow-scrolling: touch;">
@@ -216,12 +251,12 @@
 						회원가입<i class="fa fa-check spaceLeft"></i>
 					</button>
 					<button type="button" id="join-cancle" onclick="location.href='/'">
-						가입취소<i class="fa fa-times spaceLeft"></i>		
+						가입취소<i class="fa fa-times spaceLeft"></i>
 					</button>
 					<!-- <a class="button" href="/">가입취소<i class="fa fa-times spaceLeft"></i></a> -->
 				</div>
 			</form:form>
-		</div> 
+		</div>
 	</div>
 </div>
 <%@ include file="IncludeBottom.jsp"%>

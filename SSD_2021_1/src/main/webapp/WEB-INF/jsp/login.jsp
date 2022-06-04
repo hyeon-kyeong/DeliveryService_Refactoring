@@ -14,7 +14,6 @@
 
 <script type="text/javascript">
 	function frmCheck() {
-		console.log('aaaaaaaaaaaaaaaa');
 		var un = $("#username").val();
 		var pwd = $("#password").val();
 
@@ -25,7 +24,7 @@
 		$("#USERNAME").val(rsa.encrypt(un));
 		$("#PASSWORD").val(rsa.encrypt(pwd));
 
-		id.val("");
+		username.val("");
 		password.val("");
 
 	}

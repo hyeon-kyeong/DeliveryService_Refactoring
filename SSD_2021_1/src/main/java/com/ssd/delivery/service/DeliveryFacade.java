@@ -32,6 +32,8 @@ public interface DeliveryFacade {
 	List<AccountDTO> getUserList();
 
 	AccountDTO findUser(String username);
+	
+	String getSaltByUsername(String username);
 
 	// Auction
 	void insertAuction(AuctionDTO auction);

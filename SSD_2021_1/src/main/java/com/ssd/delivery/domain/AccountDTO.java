@@ -17,12 +17,11 @@ public class AccountDTO implements Serializable{
 	private String address2;
 	private String detailAddress;
 	private String extraAddress;
-	
+	private String salt;
 
 	public void setExtraAddress(String extraAddress) {
 		this.extraAddress = extraAddress;
 	}
-	
 	
 	//기본생성자
 	public AccountDTO() {
@@ -31,7 +30,7 @@ public class AccountDTO implements Serializable{
 	
 	//Register 생성자
 	public AccountDTO(String username, String password, String email, String firstName, String lastName,
-			String address, String phone, int status, String carInfo) {
+			String address, String phone, int status, String carInfo, String salt) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -42,12 +41,13 @@ public class AccountDTO implements Serializable{
 		this.phone = phone;
 		this.status = status;
 		this.carInfo = carInfo;
+		this.salt = salt;
 	}
 	
 	
 	public AccountDTO(String username, String password, String email, String firstName, String lastName, String address,
 			String phone, int status, String carInfo, String postcode,
-			String address2, String detailAddress, String extraAddress) {
+			String address2, String detailAddress, String extraAddress, String salt) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -173,6 +173,12 @@ public class AccountDTO implements Serializable{
 	}
 	public void setCarInfo(String carInfo) {
 		this.carInfo = carInfo;
+	}
+	public String getSalt() {
+		return salt;
+	}
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 	
 }

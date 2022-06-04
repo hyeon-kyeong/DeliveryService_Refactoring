@@ -69,5 +69,11 @@ public class MybatisAccountDao implements AccountDao {
 		
 		return accountMapper.getUserList();
 	}
+	
+	@Override
+	public String getSaltByUsername(String username) {
+		
+		return accountMapper.getSaltByUsername(username);
+	}
 
 }
