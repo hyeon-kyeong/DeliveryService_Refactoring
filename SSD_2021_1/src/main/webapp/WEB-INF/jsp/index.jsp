@@ -32,25 +32,24 @@
 					<c:choose>
 						<c:when test="${ac.successfulBidder eq null}">
 							<div class="col-6 col-12-medium">
-						<ul class="actions">
-							<li><span class="button">경매 입장가능</span></li>
-						</ul>
-					</div>
+								<ul class="actions">
+									<li><span class="button">경매 입장가능</span></li>
+								</ul>
+							</div>
 						</c:when>
 						<c:otherwise>
 							<div class="col-6 col-12-medium">
-						<ul class="actions">
-							<li><span class="button primary" disabled>종료된 경매</span></li>
-						</ul>
-					</div>
+								<ul class="actions">
+									<li><span class="button primary" disabled>종료된 경매</span></li>
+								</ul>
+							</div>
 						</c:otherwise>
 					</c:choose>
 				</article>
 			</c:forEach>
 		</section>
 
-		<br /> <br /> <br />
-		<br />
+		<br /> <br /> <br /> <br />
 		<h3>👥 공동구매</h3>
 		<section class="tiles">
 			<c:forEach var="cp" items="${CPList}">
@@ -69,8 +68,7 @@
 			</c:forEach>
 		</section>
 
-		<br /> <br /> <br />
-		<br />
+		<br /> <br /> <br /> <br />
 		<h3>🚛 회원간 용달 거래</h3>
 		<section class="tiles">
 			<c:forEach var="del" items="${DelList}">
@@ -91,8 +89,7 @@
 				</article>
 			</c:forEach>
 		</section>
-		<br /> <br /> <br />
-		<br />
+		<br /> <br /> <br /> <br />
 	</div>
 </div>
 

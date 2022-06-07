@@ -47,8 +47,7 @@ public class ViewMessageController {
 		mav.addObject("sender", username);
 		mav.addObject("receiversList", receivers);
 		mav.addObject("userSession", account);
-//		mav.setViewName("messageForm");
-		mav.setViewName("chatTest");
+		mav.setViewName("messageForm");
 				
 		return mav;
 	}
