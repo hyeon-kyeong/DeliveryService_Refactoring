@@ -13,7 +13,7 @@ import com.ssd.delivery.domain.DeliveryDTO;
 import com.ssd.delivery.service.DeliveryFacade;
 
 @Controller
-public class A {
+public class HomeController {
 	
 	private DeliveryFacade delivery;
 	@Autowired
