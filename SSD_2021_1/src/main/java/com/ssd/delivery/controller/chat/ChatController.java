@@ -1,8 +1,11 @@
 package com.ssd.delivery.controller.chat;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +44,12 @@ public class ChatController {
 		AccountDTO account = (AccountDTO)session.getAttribute("userSession");
 
 		String username = account.getUsername();
+		List<AccountDTO> receivers = deliveryImpl.getUserList();
+		
 		ModelAndView mav = new ModelAndView();
 
 		mav.addObject("username", username);
+		mav.addObject("receiversList", receivers);
 		mav.setViewName("chat");
 
 		return mav;
@@ -57,11 +63,23 @@ public class ChatController {
 		SimpleDateFormat dFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 		String currentDate = dFormat.format(date);
 		
-		MessageDTO chat2 = new MessageDTO(chat.getSenderUsername(), chat.getSenderUsername(), chat.getContent(), currentDate);
+		MessageDTO chat2 = new MessageDTO(chat.getSenderUsername(), chat.getReceiverUsername(), chat.getContent(), currentDate);
 		
 		System.out.println("xxxxxxxxxx");
 		System.out.println(chat2.toString());
 		deliveryImpl.insertMessage(chat2);
 		
+	}
+	
+	@RequestMapping("chatSession.do")
+	public String[] userReturn() {
+		List<AccountDTO> receivers = deliveryImpl.getUserList();
+		String[] username = new String[receivers.size()];
+
+		for (int i = 0; i < username.length; i++) {
+			username[i] = receivers.get(i).getUsername();
+		}
+		
+		return username;
 	}
 }
