@@ -5,15 +5,30 @@
 <style>
 .chatbox {
 	padding: 10px 10px 0px 10px;
-	height: 250px;
+	height: 450px;
 	width: 100%;
 }
-
 </style>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="/webjars/sockjs-client/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/stomp.min.js"></script>
 <script>
+	$(document).ready(function() {
+		var socket = new SockJS('/websocket');
+		stompClient = Stomp.over(socket);
+		stompClient.connect({}, function(frame) {
+			setConnected(true);
+			console.log('Connected: ' + frame);
+			stompClient.subscribe('/topic/greetings', function(greeting) {
+				showGreeting(JSON.parse(greeting.body).content);
+			});
+			stompClient.subscribe('/topic/chat', function(chat) {
+				showChat(JSON.parse(chat.body));
+			});
+		});
+
+	});
+	
 	var stompClient = null;
 
 	function setConnected(connected) {
@@ -66,32 +81,45 @@
 				'content' : $("#content").val()
 			}));
 		}
-		
+
 		$("#content").val("");
 	}
 
-	function showGreeting(message) {
-		$("#greetings").append("<tr><td>" + message + "</td></tr>");
-	}
+// 	function showGreeting(message) {
+// 		$("#greetings").append("<tr><td>" + message + "</td></tr>");
+// 	}
+
 	function showChat(chat) {
-		if (chat.senderUsername == $("#senderUsername").val()) {
-			var blank = "";
-			
-			for (var i = 0; i < 105; i++) {
-				blank += "&nbsp";
-			}
-			
-			$("#chatbox").append(
-					"<tr><td>" + blank + "나" + 
-					"<br><div class=\"d-inline-flex p-2 bg-light text-dark float-right style=\"background-color: #E16A93\";>"  + chat.content
-							+ "</div></td></tr>");
+		var today = new Date();
+		var hour = ('0' + today.getHours()).slice(-2);
+		var minute = ('0' + today.getMinutes()).slice(-2);
+		var blank = "<br>";
+		for (var i = 0; i < Math.floor(chat.content.length / 17); i++) {
+			blank += "<br>";
 		}
+		console.log(blank);
+		if (chat.senderUsername == $("#senderUsername").val()) {		
+			$("#chatbox").append(
+				"<table>"
+				+ "<label for=\"myMessage\" class=\"float-right\">나</label>"
+				+ "<br><div class=\"d-inline-flex p-2 bg-light text-dark float-right\" id=\"myMessage\" style=\"max-width:60%\; border-radius:10px\;\">"
+				+ chat.content + "</div>"
+				+ blank + "<div class=\"float-right\">"
+				+ hour + " : " + minute
+				+ "</div></table>");
+		} 
 		else {
 			$("#chatbox").append(
-					"<tr><td>" + chat.senderUsername + "<br><div class=\"d-inline-flex p-2 bg-secondary text-white float-left\">" + chat.content
-							+ "</td></tr>");
+				"<table>"
+				+ "<label for=\"yourMessage\" class=\"float-left\">"
+				+ chat.senderUsername
+				+ "</label>"
+				+ "<br><div class=\"d-inline-flex p-2 bg-secondary text-white float-left\" style=\"max-width:60%\; border-radius:10px\;\">"
+				+ chat.content + "</div>"
+				+ blank + today.getHours() + " : " + today.getMinutes()
+				+ "</table>");
 		}
-		
+
 		var chat = document.getElementById("chatbox");
 		chat.scrollTop = chat.scrollHeight;
 	}
@@ -100,9 +128,9 @@
 		$("form").on('submit', function(e) {
 			e.preventDefault();
 		});
-		$("#content").click(function() {
-			connect();
-		});
+// 		$("#content").click(function() {
+// 			connect();
+// 		});
 		$("#disconnect").click(function() {
 			disconnect();
 		});
@@ -212,47 +240,48 @@
 						<a href="/delivery/message.do" class="button text-white"
 							style="display: table-cell; padding: 20px;">DM리스트</a>
 					</div>
-					<div class="chatbox" id="chatbox" style="overflow:auto; overflow-x:hidden;"></div>
-<%-- 					<c:forEach var="list" items="${contentList}"> --%>
-<%-- 						<c:choose> --%>
-<%-- 							<c:when test="${username eq list.senderUsername}"> --%>
-<!-- 								<div class="chatbox "> -->
-<!-- 									<div class="chatbox float-right"> -->
-<!-- 										<label for="myMessage" class="float-right">나</label><br> -->
-<%-- 										${list.messageDate } --%>
-<!-- 										<div class="d-inline-flex p-2 bg-light text-dark float-right" -->
-<%-- 											id="myMessage">${list.content}</div> --%>
-<!-- 									</div> -->
-<!-- 								</div> -->
-<%-- 							</c:when> --%>
-<%-- 							<c:otherwise> --%>
-<!-- 								<div class="chatbox"> -->
-<!-- 									<div class="chatbox "> -->
-<%-- 										<label for="buyerMessage">${list.senderUsername}</label><br> --%>
+					<div class="chatbox" id="chatbox"
+						style="overflow-y: auto; overflow-x: hidden;"></div>
+					<%-- 					<c:forEach var="list" items="${contentList}"> --%>
+					<%-- 						<c:choose> --%>
+					<%-- 							<c:when test="${username eq list.senderUsername}"> --%>
+					<!-- 								<div class="chatbox "> -->
+					<!-- 									<div class="chatbox float-right"> -->
+					<!-- 										<label for="myMessage" class="float-right">나</label><br> -->
+					<%-- 										${list.messageDate } --%>
+					<!-- 										<div class="d-inline-flex p-2 bg-light text-dark float-right" -->
+					<%-- 											id="myMessage">${list.content}</div> --%>
+					<!-- 									</div> -->
+					<!-- 								</div> -->
+					<%-- 							</c:when> --%>
+					<%-- 							<c:otherwise> --%>
+					<!-- 								<div class="chatbox"> -->
+					<!-- 									<div class="chatbox "> -->
+					<%-- 										<label for="buyerMessage">${list.senderUsername}</label><br> --%>
 
-<%-- 										${list.messageDate } --%>
-<!-- 										<div -->
-<!-- 											class="d-inline-flex p-2 bg-secondary text-white float-left" -->
-<%-- 											id="buyerMessage">${list.content}</div> --%>
-<!-- 									</div> -->
-<!-- 								</div> -->
-<%-- 							</c:otherwise> --%>
+					<%-- 										${list.messageDate } --%>
+					<!-- 										<div -->
+					<!-- 											class="d-inline-flex p-2 bg-secondary text-white float-left" -->
+					<%-- 											id="buyerMessage">${list.content}</div> --%>
+					<!-- 									</div> -->
+					<!-- 								</div> -->
+					<%-- 							</c:otherwise> --%>
 
-<%-- 						</c:choose> --%>
-<%-- 					</c:forEach> --%>
+					<%-- 						</c:choose> --%>
+					<%-- 					</c:forEach> --%>
 				</div>
 				<br>
 				<div class="form-group">
 					<label for="exampleFormControlTextarea1">메시지 보내기</label>
-					<textarea class="form-control" id="content" rows="3"
-						style="width: 500px;" placeholder="이곳에 메세지를 작성하세요." name="content"></textarea>
+					<textarea class="form-control" id="content"
+						style="width:500px; height:50px; overflow-y: scroll; overflow-x: hidden;" placeholder="이곳에 메세지를 작성하세요." name="content"></textarea>
 					<c:if test="${data ne null}">
 						<p style="color: #E16A93">${data.message}</p>
 					</c:if>
 				</div>
 				<button id="chatSend" class="primary" type="button">Chat
 					Send</button>
-<!-- 				<input type="submit" value="Send Message" class="primary" /> -->
+				<!-- 				<input type="submit" value="Send Message" class="primary" /> -->
 			</div>
 		</div>
 	</div>
