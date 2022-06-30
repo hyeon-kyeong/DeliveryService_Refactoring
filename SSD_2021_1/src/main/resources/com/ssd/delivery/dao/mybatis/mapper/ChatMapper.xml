@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssd.delivery.dao.mybatis.mapper.ChatMapper">
+  <cache />
+
+   <insert id="insertChat" parameterType="ChatDTO">
+    INSERT INTO CHATMESSAGE
+      (CHATID, USERNAME, CONTENT, CHATDATE, ROOMID)
+    VALUES
+      (CHAT_SEQ.NEXTVAL, #{USERNAME}, #{CONTENT}, #{CHATDATE}, #{ROOMID})
+	</insert>
+	
+	<select id="getRoomIdByUsername" resultType="int" parameterType="String">
+    SELECT ROOMID
+    FROM CHATMESSAGE
+    WHERE USERNAME = #{USERNAME}
+	</select>
+	 
+	<select id="getChatListByRoomId" resultType="ChatDTO" parameterType="int">
+    SELECT *
+    FROM CHATMESSAGE
+    WHERE ROOMID = #{ROOMID}
+	</select>
+  
+</mapper>
