@@ -273,8 +273,8 @@
 				<br>
 				<div class="form-group">
 					<label for="exampleFormControlTextarea1">메시지 보내기</label>
-					<textarea class="form-control" id="content"
-						style="width:500px; height:50px; overflow-y: scroll; overflow-x: hidden;" placeholder="이곳에 메세지를 작성하세요." name="content"></textarea>
+					<textarea class="form-control" id="content" rows="2" cols="2"
+						style="width:500px; overflow-y:scroll;" placeholder="이곳에 메세지를 작성하세요." name="content"></textarea>
 					<c:if test="${data ne null}">
 						<p style="color: #E16A93">${data.message}</p>
 					</c:if>
