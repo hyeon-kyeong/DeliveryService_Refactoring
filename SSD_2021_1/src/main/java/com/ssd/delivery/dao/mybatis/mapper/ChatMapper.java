@@ -6,11 +6,20 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.ssd.delivery.domain.ChatDTO;
+import com.ssd.delivery.domain.ChatRoomJoinDTO;
 
 @Mapper
 public interface ChatMapper {
 
 	void insertChat(ChatDTO chat);
+	
+	int createRoomId();
+	
+	void insertChatRoomInfo(ChatRoomJoinDTO chatRoom);
+	
+	int getRoomId(String username);
+	
+	String getUsernameByRoomId(int roomId);
 	
 	List<Integer> getRoomIdByUsername(@Param("username")String username);
 	
