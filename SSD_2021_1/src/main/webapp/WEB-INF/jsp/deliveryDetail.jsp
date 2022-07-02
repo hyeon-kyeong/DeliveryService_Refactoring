@@ -13,7 +13,7 @@
 			</div>
 			<div style="float: right; padding-right: 10px">
 				<a class=button
-					href="/delivery/messageCreate2.do?receiverUsername=${delivery.username}">💬
+					href="/delivery/createChatRoom.do?receiverUsername=${delivery.username}">💬
 					용달 기사님께 디엠 보내기</a>
 			</div>
 		</c:if>

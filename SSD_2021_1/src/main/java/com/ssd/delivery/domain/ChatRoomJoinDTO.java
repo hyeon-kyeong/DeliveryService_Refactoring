@@ -2,19 +2,24 @@ package com.ssd.delivery.domain;
 import java.io.Serializable;
 
 @SuppressWarnings("serial")
-public class ChatRoomJoinDTO implements Serializable
-{
-	
+public class ChatRoomJoinDTO implements Serializable {
+
 	private int joinId;
 	private String username;
 	private int roomId;
 	
-	public ChatRoomJoinDTO(int joinId, String username, int roomId) {
+	public ChatRoomJoinDTO(String username, int roomId) {
 		super();
-		this.joinId = joinId;
 		this.username = username;
 		this.roomId = roomId;
 	}
+	
+//	public ChatRoomJoinDTO(int joinId, String username, int roomId) {
+//		super();
+//		this.joinId = joinId;
+//		this.username = username;
+//		this.roomId = roomId;
+//	}
 
 	public int getJoinId() {
 		return joinId;
@@ -42,15 +47,8 @@ public class ChatRoomJoinDTO implements Serializable
 
 	@Override
 	public String toString() {
-		return "ChatRoomJoinDTO [joinId=" + joinId + ", username=" + username + ", roomId=" + roomId + "]";
+		return "ChatRoomJoinDTO [joinId=" + joinId + ", username=" + username
+				+ ", roomId=" + roomId + "]";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

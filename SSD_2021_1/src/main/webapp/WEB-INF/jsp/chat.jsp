@@ -128,9 +128,6 @@
 		$("form").on('submit', function(e) {
 			e.preventDefault();
 		});
-// 		$("#content").click(function() {
-// 			connect();
-// 		});
 		$("#disconnect").click(function() {
 			disconnect();
 		});
@@ -223,22 +220,14 @@
 					<div class="bg-dark text-white "
 						style="width: 500px; height: 80px; display: table;">
 						<span class="align-middle"
-							style="display: table-cell; padding: 0 0 0 20px;">받는사람</span> <select
-							id="receiverUsername" name="receiverUsername"
-							class="form-control">
-							<c:forEach var="receivers" items="${receiversList}"
-								varStatus="status">
-								<option value="${receivers.username}">${receivers.username}(
-									${receivers.firstName} ${receivers.lastName } )</option>
-							</c:forEach>
-						</select> <input type="hidden" id="senderUsername" value="${username}">
+							style="display: table-cell; text-align: center;">${receiverUsername} 님 과의 대화</span>
 
 						<!-- 						 <span class="align-middle" -->
 						<%-- 							style="display: table-cell; padding: 0 0 0 20px;">${receiver}님 --%>
 						<!-- 							과의 대화</span>  -->
 						<!-- <a href="message_list.jsp">DM리스트</a> -->
 						<a href="/delivery/message.do" class="button text-white"
-							style="display: table-cell; padding: 20px;">DM리스트</a>
+							style="display: table-cell; padding: 20px; font-size:20px">DM리스트</a>
 					</div>
 					<div class="chatbox" id="chatbox"
 						style="overflow-y: auto; overflow-x: hidden;"></div>

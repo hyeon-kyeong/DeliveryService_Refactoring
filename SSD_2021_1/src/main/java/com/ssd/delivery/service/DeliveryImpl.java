@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssd.delivery.dao.AccountDao;
 import com.ssd.delivery.dao.AuctionDao;
 import com.ssd.delivery.dao.AuctionLineItemDao;
+import com.ssd.delivery.dao.ChatDao;
 import com.ssd.delivery.dao.CoPurchasingDao;
 import com.ssd.delivery.dao.DeliveryDao;
 import com.ssd.delivery.dao.EventDao;
@@ -21,6 +22,8 @@ import com.ssd.delivery.dao.MessageDao;
 import com.ssd.delivery.domain.AccountDTO;
 import com.ssd.delivery.domain.AuctionDTO;
 import com.ssd.delivery.domain.AuctionLineItemDTO;
+import com.ssd.delivery.domain.ChatDTO;
+import com.ssd.delivery.domain.ChatRoomJoinDTO;
 import com.ssd.delivery.domain.CoPurchasingDTO;
 import com.ssd.delivery.domain.CoPurchasingLineItemDTO;
 import com.ssd.delivery.domain.DeliveryDTO;
@@ -44,6 +47,8 @@ public class DeliveryImpl implements DeliveryFacade {
 	private FavoriteUserDao fuDao;
 	@Autowired
 	private MessageDao messageDao;
+	@Autowired
+	private ChatDao chatDao;
 	@Autowired
 	private EventDao eventDao;
 	@Autowired // applicationContext.xml에 정의된 scheduler 객체를 주입 받음
@@ -261,6 +266,35 @@ public class DeliveryImpl implements DeliveryFacade {
 		return messageDao.getMessageList();
 	}
 
+	//Chat
+	public void insertChat(ChatDTO chat) throws DataAccessException {
+		chatDao.insertChat(chat);
+	} 
+	
+	public int createRoomId() throws DataAccessException {
+		return chatDao.createRoomId();
+	}
+	
+	public void insertChatRoomInfo(ChatRoomJoinDTO chatRoom) throws DataAccessException {
+		chatDao.insertChatRoomInfo(chatRoom);
+	}
+	
+	public int getRoomId(String username) throws DataAccessException {
+		return chatDao.getRoomId(username);
+	}
+	
+	public String getUsernameByRoomId(int roomId) throws DataAccessException {
+		return chatDao.getUsernameByRoomId(roomId);
+	}
+	
+	public List<Integer> getRoomIdByUsername(String username) throws DataAccessException{
+		return chatDao.getRoomIdByUsername(username);
+	}
+	
+	public List<ChatDTO> getChatListByRoomId(int roomId) throws DataAccessException {
+		return chatDao.getChatListByRoomId(roomId);
+	}
+	
 	// CPlineitem
 	public List<CoPurchasingLineItemDTO> getCPLineItemsByCPId(int cpId) {
 		return cplineitem.getCPLineItemsByCPId(cpId);

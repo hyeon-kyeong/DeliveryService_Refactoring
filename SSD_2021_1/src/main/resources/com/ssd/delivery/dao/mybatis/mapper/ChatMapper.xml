@@ -9,7 +9,7 @@
 		INSERT INTO CHATMESSAGE
 		(CHATID, USERNAME, CONTENT, CHATDATE, ROOMID)
 		VALUES
-		(CHAT_SEQ.NEXTVAL, #{USERNAME}, #{CONTENT}, #{CHATDATE}, #{ROOMID})
+		(chat_seq.nextval, #{username}, #{content}, #{chatDate}, #{roomId})
 	</insert>
 
 	<insert id="createRoomId">
@@ -26,31 +26,31 @@
 		INSERT INTO CHATROOMJOIN
 		(JOINID, USERNAME, ROOMID)
 		VALUES
-		(CHATROOMJOIN_SEQ.NEXTVAL, #{USERNAME}, #{ROOMID})
+		(CHATROOMJOIN_SEQ.NEXTVAL, #{username}, #{roomId})
 	</insert>
 	
 	<select id="getRoomId" resultType="int" parameterType="String">
 		SELECT ROOOMID
 		FROM CHATRROMJOIN
-		WHERE USERNAME = #{USERNAME}
+		WHERE USERNAME = #{username}
 	</select>
 	
 	<select id="getUsernameByRoomId" resultType="String" parameterType="int">
 		SELECT USERNAME
 		FROM CHATROOMJOIN
-		WEHRE ROOMID = #{ROOMID}
+		WEHRE ROOMID = #{roomId}
 	</select>
 	
 	<select id="getRoomIdByUsername" resultType="int" parameterType="String">
 		SELECT ROOMID
 		FROM CHATROOMJOIN
-		WHERE USERNAME = #{USERNAME}
+		WHERE USERNAME = #{username}
 	</select>
 	
 	<select id="getChatListByRoomId" resultType="ChatDTO" parameterType="int">
 		SELECT *
 		FROM CHATMESSAGE
-		WHERE ROOMID = #{ROOMID}
+		WHERE ROOMID = #{roomId}
 	</select>
 
 </mapper>

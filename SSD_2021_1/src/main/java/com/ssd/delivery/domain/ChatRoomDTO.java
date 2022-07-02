@@ -2,11 +2,9 @@ package com.ssd.delivery.domain;
 import java.io.Serializable;
 
 @SuppressWarnings("serial")
-public class ChatRoomDTO implements Serializable
-{
-	
+public class ChatRoomDTO implements Serializable {
+
 	private int roomId;
-	
 
 	public ChatRoomDTO(int roomId) {
 		super();
@@ -20,13 +18,5 @@ public class ChatRoomDTO implements Serializable
 	public void setRoomId(int roomId) {
 		this.roomId = roomId;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

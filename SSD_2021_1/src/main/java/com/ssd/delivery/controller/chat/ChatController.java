@@ -13,10 +13,13 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ssd.delivery.domain.AccountDTO;
 import com.ssd.delivery.domain.Chat;
+import com.ssd.delivery.domain.ChatRoomDTO;
+import com.ssd.delivery.domain.ChatRoomJoinDTO;
 import com.ssd.delivery.domain.MessageDTO;
 import com.ssd.delivery.service.DeliveryImpl;
 
@@ -81,4 +84,47 @@ public class ChatController {
 		
 		return username;
 	}
+	
+ 
+	@RequestMapping("/delivery/createChatRoom.do")
+	public ModelAndView createChatRoom(HttpSession session, @RequestParam("receiverUsername") String receiverUsername) throws Exception {
+		AccountDTO account = (AccountDTO)session.getAttribute("userSession");
+
+		String username = account.getUsername();
+		ModelAndView mav = new ModelAndView();
+		List<Integer> roomIdSend = deliveryImpl.getRoomIdByUsername(username);
+		List<Integer> roomIdReceive = deliveryImpl.getRoomIdByUsername(receiverUsername);
+		
+		int roomId = -1;
+		if (roomIdSend != null && roomIdReceive != null) {
+			for (int s : roomIdSend) {
+				for (int r : roomIdReceive) {
+					if (s == r) {
+						roomId = s;
+						break;
+					}
+				}
+			}
+		}
+		
+		if (roomId == -1) {
+			roomId = deliveryImpl.createRoomId();
+
+			ChatRoomDTO chatRoom = new ChatRoomDTO(roomId);
+			
+			ChatRoomJoinDTO chatRoomSend = new ChatRoomJoinDTO(username, roomId);
+			ChatRoomJoinDTO chatRoomReceive = new ChatRoomJoinDTO(receiverUsername, roomId);
+			
+			deliveryImpl.insertChatRoomInfo(chatRoomSend);
+			deliveryImpl.insertChatRoomInfo(chatRoomReceive);
+		}
+		
+		mav.addObject("username", username);
+		mav.addObject("receiverUsername", receiverUsername);
+		mav.addObject("roomId", roomId);
+		mav.setViewName("chat");
+
+		return mav;
+	}
+	
 }

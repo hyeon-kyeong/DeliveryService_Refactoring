@@ -157,9 +157,9 @@ public class ViewMessageController {
 		ArrayList<String> messageList = new ArrayList<>();
 		
 		for (int i = 0; i < smessageList.size(); i++) {
-			if (!messageList.contains(smessageList.get(i).getSenderUsername()) && smessageList.get(i).getSenderUsername() != null)
+			if (smessageList.get(i).getSenderUsername() != null && !messageList.contains(smessageList.get(i).getSenderUsername()))
 				messageList.add(smessageList.get(i).getSenderUsername());
-			else if (!messageList.contains(smessageList.get(i).getReceiverUsername()) && smessageList.get(i).getReceiverUsername() != null)
+			else if (smessageList.get(i).getReceiverUsername() != null && !messageList.contains(smessageList.get(i).getReceiverUsername()))
 				messageList.add(smessageList.get(i).getReceiverUsername());
 		}
 		

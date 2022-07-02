@@ -8,24 +8,22 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Chat {
-	
-//	private String username;
-//	private String message;
-//
-//
-//	public Chat(String username, String message) {
-//		this.username = username;
-//		this.message = message;
-//	}
 
-	
+	// private String username;
+	// private String message;
+	//
+	//
+	// public Chat(String username, String message) {
+	// this.username = username;
+	// this.message = message;
+	// }
+
 	private int dmNo;
 	private String senderUsername;
 	private String receiverUsername;
 	private String content;
-	private String messageDate; //String으로 변경 가능
-	
-	
+	private String messageDate; // String으로 변경 가능
+
 	public Chat(String senderUsername, String content) {
 		// TODO Auto-generated constructor stub
 		this.senderUsername = senderUsername;
@@ -65,7 +63,5 @@ public class Chat {
 	public String toString() {
 		return "Chat [name=" + senderUsername + ", message=" + content + "]";
 	}
-	
-	
 
 }

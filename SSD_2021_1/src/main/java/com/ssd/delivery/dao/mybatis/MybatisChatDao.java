@@ -6,12 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
+import com.ssd.delivery.dao.ChatDao;
 import com.ssd.delivery.dao.mybatis.mapper.ChatMapper;
 import com.ssd.delivery.domain.ChatDTO;
 import com.ssd.delivery.domain.ChatRoomJoinDTO;
 
 @Repository
-public class MybatisChatDao {
+public class MybatisChatDao implements ChatDao {
 
 	@Autowired
 	private ChatMapper chatMapper;
@@ -19,6 +20,7 @@ public class MybatisChatDao {
 	public void insertChat(ChatDTO chat) throws DataAccessException {
 		chatMapper.insertChat(chat);
 	}
+	
 	
 	public int createRoomId() throws DataAccessException {
 		return chatMapper.createRoomId();

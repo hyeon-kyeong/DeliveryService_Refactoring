@@ -6,6 +6,8 @@ import java.util.List;
 import com.ssd.delivery.domain.AccountDTO;
 import com.ssd.delivery.domain.AuctionDTO;
 import com.ssd.delivery.domain.AuctionLineItemDTO;
+import com.ssd.delivery.domain.ChatDTO;
+import com.ssd.delivery.domain.ChatRoomJoinDTO;
 import com.ssd.delivery.domain.CoPurchasingDTO;
 import com.ssd.delivery.domain.CoPurchasingLineItemDTO;
 import com.ssd.delivery.domain.DeliveryDTO;
@@ -128,7 +130,24 @@ public interface DeliveryFacade {
 	List<MessageDTO> getMessageContentByReceiverUsername(String sender, String receiver);
 
 	List<MessageDTO> getMessageList();
+	
+	
+	//Chat
+	void insertChat(ChatDTO chat);
+	
+	int createRoomId();
+	
+	void insertChatRoomInfo(ChatRoomJoinDTO chatRoom);
 
+	int getRoomId(String username);
+	
+	String getUsernameByRoomId(int roomId);
+	
+	List<Integer> getRoomIdByUsername(String username);
+	
+	List<ChatDTO> getChatListByRoomId(int roomId);
+	
+	
 	// CP lineitem
 	List<CoPurchasingLineItemDTO> getCPLineItemsByCPId(int cpId);
 
