@@ -26,6 +26,8 @@
 				showChat(JSON.parse(chat.body));
 			});
 		});
+		
+// 		document.getElementById("content").focus();
 
 	});
 	
@@ -218,7 +220,7 @@
 				<h1>💬 Your Message</h1>
 				<div style="width: 500px;">
 					<div class="bg-dark text-white "
-						style="width: 500px; height: 80px; display: table;">
+						style="width: 500px; height: 60px; display: table;">
 						<span class="align-middle"
 							style="display: table-cell; text-align: center;">${receiverUsername} 님 과의 대화</span>
 
@@ -227,7 +229,7 @@
 						<!-- 							과의 대화</span>  -->
 						<!-- <a href="message_list.jsp">DM리스트</a> -->
 						<a href="/delivery/message.do" class="button text-white"
-							style="display: table-cell; padding: 20px; font-size:20px">DM리스트</a>
+							style="display: table-cell; padding: 15px; font-size:20px">DM리스트</a>
 					</div>
 					<div class="chatbox" id="chatbox"
 						style="overflow-y: auto; overflow-x: hidden;"></div>

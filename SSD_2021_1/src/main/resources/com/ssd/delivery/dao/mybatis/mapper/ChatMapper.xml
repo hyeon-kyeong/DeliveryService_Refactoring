@@ -17,12 +17,13 @@
 		(ROOMID)
 		VALUES
 		(CHATROOM_SEQ.NEXTVAL)
-		<selectKey keyProperty="seq" resultType="int" order="AFTER">
-	    	SELECT CHATROOM_SEQ.CURRVAL FROM CHATROOM
-	    </selectKey>
 	</insert>
 	
 	<insert id="insertChatRoomInfo" parameterType="map">
+		<selectKey keyProperty="roomId" resultType="int" order="BEFORE">
+	    	SELECT MAX(ROOMID) FROM CHATROOM
+	    </selectKey>
+	    
 		INSERT INTO CHATROOMJOIN
 		(JOINID, USERNAME, ROOMID)
 		VALUES

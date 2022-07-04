@@ -4,14 +4,18 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class ChatRoomDTO implements Serializable {
 
-	private int roomId;
+	private static int roomId;
 
+	public ChatRoomDTO() {
+		super();
+	}
+	
 	public ChatRoomDTO(int roomId) {
 		super();
 		this.roomId = roomId;
 	}
 
-	public int getRoomId() {
+	public static int getRoomId() {
 		return roomId;
 	}
 

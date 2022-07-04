@@ -18,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ssd.delivery.domain.AccountDTO;
 import com.ssd.delivery.domain.Chat;
-import com.ssd.delivery.domain.ChatRoomDTO;
 import com.ssd.delivery.domain.ChatRoomJoinDTO;
 import com.ssd.delivery.domain.MessageDTO;
 import com.ssd.delivery.service.DeliveryImpl;
@@ -108,15 +107,15 @@ public class ChatController {
 		}
 		
 		if (roomId == -1) {
-			roomId = deliveryImpl.createRoomId();
-
-			ChatRoomDTO chatRoom = new ChatRoomDTO(roomId);
+			deliveryImpl.createRoomId();
 			
-			ChatRoomJoinDTO chatRoomSend = new ChatRoomJoinDTO(username, roomId);
-			ChatRoomJoinDTO chatRoomReceive = new ChatRoomJoinDTO(receiverUsername, roomId);
+			ChatRoomJoinDTO chatRoomSend = new ChatRoomJoinDTO(username);
+			ChatRoomJoinDTO chatRoomReceive = new ChatRoomJoinDTO(receiverUsername);
 			
 			deliveryImpl.insertChatRoomInfo(chatRoomSend);
 			deliveryImpl.insertChatRoomInfo(chatRoomReceive);
+			
+			roomId = chatRoomSend.getRoomId();
 		}
 		
 		mav.addObject("username", username);

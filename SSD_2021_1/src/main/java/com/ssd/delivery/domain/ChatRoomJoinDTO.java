@@ -8,18 +8,16 @@ public class ChatRoomJoinDTO implements Serializable {
 	private String username;
 	private int roomId;
 	
+	public ChatRoomJoinDTO(String username) {
+		super();
+		this.username = username;
+	}
+	
 	public ChatRoomJoinDTO(String username, int roomId) {
 		super();
 		this.username = username;
 		this.roomId = roomId;
 	}
-	
-//	public ChatRoomJoinDTO(int joinId, String username, int roomId) {
-//		super();
-//		this.joinId = joinId;
-//		this.username = username;
-//		this.roomId = roomId;
-//	}
 
 	public int getJoinId() {
 		return joinId;
