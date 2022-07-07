@@ -45,4 +45,8 @@ public class MybatisChatDao implements ChatDao {
 	public List<ChatDTO> getChatListByRoomId(int roomId) throws DataAccessException {
 		return chatMapper.getChatListByRoomId(roomId);
 	}
+	
+	public List<ChatRoomJoinDTO> getChatUserListByRoomId(int roomId) throws DataAccessException {
+		return chatMapper.getChatUserListByRoomId(roomId);
+	}
 }

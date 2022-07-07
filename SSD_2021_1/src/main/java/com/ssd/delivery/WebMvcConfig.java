@@ -61,6 +61,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 		//chat
 		registry.addViewController("/delivery/createChatRoom.do").setViewName("chat");
+		registry.addViewController("/delivery/chatList.do").setViewName("chatList");
+		registry.addViewController("/deilvery/chat.do").setViewName("chat");
 	}
 
 }

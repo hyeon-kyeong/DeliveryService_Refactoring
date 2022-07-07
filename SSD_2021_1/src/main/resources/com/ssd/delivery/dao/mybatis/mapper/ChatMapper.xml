@@ -54,4 +54,10 @@
 		WHERE ROOMID = #{roomId}
 	</select>
 
+	<select id="getChatUserListByRoomId" resultType="ChatRoomJoinDTO" parameterType="int">
+		SELECT *
+		FROM CHATROOMJOIN
+		WHERE ROOMID = #{roomId}
+	</select>
+	
 </mapper>

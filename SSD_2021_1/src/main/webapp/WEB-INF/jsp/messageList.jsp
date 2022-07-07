@@ -17,7 +17,7 @@
 				<h1>📬 Message List</h1>
 				<div style="width: 500px;"> 
 					<div class="bg-dark text-white "
-						style="width: 500px; height: 80px; display: table;">
+						style="width: 500px; height: 80px; display: table; border-radius: 5px;">
 						<span class="align-middle"
 							style="display: table-cell; padding: 0 0 0 20px;">메시지 리스트</span>
 						<a href=#menu></a>
@@ -39,9 +39,9 @@
 								
 						</c:forEach>
 					</c:if> 
-					<a href="/delivery/messageCreate.do"
-						class="button primary">새로운 메시지
-						시작하기</a>
+<!-- 					<a href="/delivery/messageCreate.do" -->
+<!-- 						class="button primary">새로운 메시지 -->
+<!-- 						시작하기</a> -->
 				</div>
 			</div>
 		</div>

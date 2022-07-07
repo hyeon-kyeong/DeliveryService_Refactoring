@@ -23,4 +23,5 @@ public interface ChatDao {
 	
 	List<ChatDTO> getChatListByRoomId(int roomId) throws DataAccessException;
 
+	List<ChatRoomJoinDTO> getChatUserListByRoomId(int roomId) throws DataAccessException;
 }

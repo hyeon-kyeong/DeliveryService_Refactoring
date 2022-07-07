@@ -8,6 +8,10 @@ public class ChatRoomJoinDTO implements Serializable {
 	private String username;
 	private int roomId;
 	
+	public ChatRoomJoinDTO() {
+		super();
+	}
+	
 	public ChatRoomJoinDTO(String username) {
 		super();
 		this.username = username;

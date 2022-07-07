@@ -147,6 +147,8 @@ public interface DeliveryFacade {
 	
 	List<ChatDTO> getChatListByRoomId(int roomId);
 	
+	List<ChatRoomJoinDTO> getChatUserListByRoomId(int roomId);
+	
 	
 	// CP lineitem
 	List<CoPurchasingLineItemDTO> getCPLineItemsByCPId(int cpId);

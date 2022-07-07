@@ -3,7 +3,9 @@ package com.ssd.delivery.controller.chat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -18,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ssd.delivery.domain.AccountDTO;
 import com.ssd.delivery.domain.Chat;
+import com.ssd.delivery.domain.ChatDTO;
 import com.ssd.delivery.domain.ChatRoomJoinDTO;
 import com.ssd.delivery.domain.MessageDTO;
 import com.ssd.delivery.service.DeliveryImpl;
@@ -40,17 +43,51 @@ public class ChatController {
 	}
 
 
+//	@RequestMapping("/delivery/chat.do")
+//	public ModelAndView viewMessageContent(Model model, HttpSession session) throws Exception {
+//		AccountDTO account = (AccountDTO)session.getAttribute("userSession");
+//
+//		String username = account.getUsername();
+//		List<AccountDTO> receivers = deliveryImpl.getUserList();
+//		
+//		ModelAndView mav = new ModelAndView();
+//
+//		mav.addObject("username", username);
+//		mav.addObject("receiversList", receivers);
+//		mav.setViewName("chat");
+//
+//		return mav;
+//	}
+	
 	@RequestMapping("/delivery/chat.do")
-	public ModelAndView viewMessageContent(Model model, HttpSession session) throws Exception {
+	public ModelAndView enterChatRoom(Model model, HttpSession session, @RequestParam("receiverUsername")String receiverUsername) throws Exception {
+		
 		AccountDTO account = (AccountDTO)session.getAttribute("userSession");
-
-		String username = account.getUsername();
-		List<AccountDTO> receivers = deliveryImpl.getUserList();
+		String senderUsername = account.getUsername();
+		
+		List<Integer> roomIdSend = deliveryImpl.getRoomIdByUsername(senderUsername);
+		List<Integer> roomIdReceive = deliveryImpl.getRoomIdByUsername(receiverUsername);
+		
+		int roomId = -1;
+		if (roomIdSend != null && roomIdReceive != null) {
+			for (int s : roomIdSend) {
+				for (int r : roomIdReceive) {
+					if (s == r) {
+						roomId = s;
+						break;
+					}
+				}
+			}
+		}
+		
+		List<ChatDTO> chatList = deliveryImpl.getChatListByRoomId(roomId);
 		
 		ModelAndView mav = new ModelAndView();
 
-		mav.addObject("username", username);
-		mav.addObject("receiversList", receivers);
+		mav.addObject("senderUsername", senderUsername);
+		mav.addObject("receiverUsername", receiverUsername);
+		mav.addObject("roomId", roomId);
+		mav.addObject("chatLsit", chatList);
 		mav.setViewName("chat");
 
 		return mav;
@@ -117,7 +154,7 @@ public class ChatController {
 			
 			roomId = chatRoomSend.getRoomId();
 		}
-		
+
 		mav.addObject("username", username);
 		mav.addObject("receiverUsername", receiverUsername);
 		mav.addObject("roomId", roomId);
@@ -126,4 +163,33 @@ public class ChatController {
 		return mav;
 	}
 	
+	@RequestMapping("/delivery/chatList.do")
+	public ModelAndView chatRoomList(HttpSession session) throws Exception {
+		AccountDTO account = (AccountDTO)session.getAttribute("userSession");
+
+		String username = account.getUsername();
+		ModelAndView mav = new ModelAndView();
+		List<Integer> roomId = deliveryImpl.getRoomIdByUsername(username);
+
+		Map<String, String> map = new HashMap<>();
+		for (int id : roomId) {
+			List<ChatRoomJoinDTO> userList = deliveryImpl.getChatUserListByRoomId(id);
+			List<ChatDTO> chatList = deliveryImpl.getChatListByRoomId(id);
+			
+			String chat = "";
+			if (chatList.size() != 0) 
+				chat = chatList.get(chatList.size() - 1).getContent();
+
+			for (ChatRoomJoinDTO user : userList) {
+				if (!user.getUsername().equals(username)) {
+					map.put(user.getUsername(), chat);
+				}
+			}
+		}
+		
+		mav.addObject("map", map);
+		mav.setViewName("chatList");
+
+		return mav;
+	}
 }

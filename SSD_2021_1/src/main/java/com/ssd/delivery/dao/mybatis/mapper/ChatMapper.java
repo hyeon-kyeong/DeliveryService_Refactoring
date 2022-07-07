@@ -24,4 +24,6 @@ public interface ChatMapper {
 	List<Integer> getRoomIdByUsername(@Param("username")String username);
 	
 	List<ChatDTO> getChatListByRoomId(@Param("roomId")int roomId);
+	
+	List<ChatRoomJoinDTO> getChatUserListByRoomId(int roomId);
 }

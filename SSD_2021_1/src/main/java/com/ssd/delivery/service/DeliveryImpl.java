@@ -295,6 +295,11 @@ public class DeliveryImpl implements DeliveryFacade {
 		return chatDao.getChatListByRoomId(roomId);
 	}
 	
+	public List<ChatRoomJoinDTO> getChatUserListByRoomId(int roomId) throws DataAccessException {
+		return chatDao.getChatUserListByRoomId(roomId);
+	}
+	
+	
 	// CPlineitem
 	public List<CoPurchasingLineItemDTO> getCPLineItemsByCPId(int cpId) {
 		return cplineitem.getCPLineItemsByCPId(cpId);
