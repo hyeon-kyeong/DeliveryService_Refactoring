@@ -23,10 +23,13 @@
 				showGreeting(JSON.parse(greeting.body).content);
 			});
 			stompClient.subscribe('/topic/chat', function(chat) {
+				console.log(chat);
 				showChat(JSON.parse(chat.body));
 			});
 		});
 
+		var chat = document.getElementById("chatbox");
+		chat.scrollTop = chat.scrollHeight;
 		// 		document.getElementById("content").focus();
 
 	});
@@ -75,17 +78,23 @@
 	// 		}));
 	// 	}
 
-	var chatVal = false;
 	function sendChat() {
+		var today = new Date();
+		var year = today.getFullYear();
+		var month = ('0' + (today.getMonth() + 1)).slice(-2);
+		var day = ('0' + today.getDate()).slice(-2);
+		var hour = ('0' + today.getHours()).slice(-2);
+		var minute = ('0' + today.getMinutes()).slice(-2);
+		
 		if ($("#content").val() != "") {
-			chatVal = true;
 			stompClient.send("/app/chat", {}, JSON.stringify({
-				'senderUsername' : $("#senderUsername").val(),
-				'receiverUsername' : $("#receiverUsername").val(),
-				'content' : $("#content").val()
+				'username' : $("#senderUsername").val(),
+				'content' : $("#content").val(),
+				'chatDate' : year + "/" + month + "/" + day + " " + hour + ":" + minute,
+				'roomId' : $("#roomId").val()
 			}));
 		}
-		
+
 		chatSend();
 
 		$("#content").val("");
@@ -94,35 +103,41 @@
 	// 	function showGreeting(message) {
 	// 		$("#greetings").append("<tr><td>" + message + "</td></tr>");
 	// 	}
+	var isNull = true;
 	function showChat(chat) {
+		isNull = false;
 		var today = new Date();
+		var year = today.getFullYear();
+		var month = ('0' + (today.getMonth() + 1)).slice(-2);
+		var day = ('0' + today.getDate()).slice(-2);
 		var hour = ('0' + today.getHours()).slice(-2);
 		var minute = ('0' + today.getMinutes()).slice(-2);
+		
 		var blank = "<br>";
 		for (var i = 0; i < Math.floor(chat.content.length / 17); i++) {
 			blank += "<br>";
 		}
 
-		if (chat.senderUsername == $("#senderUsername").val()) {
+		if (chat.username == $("#senderUsername").val()) {
 			$("#chatbox")
 					.append(
 							"<table>"
 									+ "<label for=\"myMessage\" class=\"float-right\">나</label>"
 									+ "<br><div class=\"d-inline-flex p-2 bg-light text-dark float-right\" id=\"myMessage\" style=\"max-width:60%\; border-radius:10px\;\">"
 									+ chat.content + "</div>" + blank
-									+ "<div class=\"float-right\">" + hour
-									+ " : " + minute + "</div></table>");
+									+ "<div class=\"float-right\">" + year + "/" + month + "/" + day + " " + hour
+									+ ":" + minute + "</div></table>");
 		} else {
 			$("#chatbox")
 					.append(
 							"<table>"
 									+ "<label for=\"yourMessage\" class=\"float-left\">"
-									+ chat.senderUsername
+									+ $("#receiverUsername").val()
 									+ "</label>"
 									+ "<br><div class=\"d-inline-flex p-2 bg-secondary text-white float-left\" style=\"max-width:60%\; border-radius:10px\;\">"
 									+ chat.content + "</div>" + blank
-									+ today.getHours() + " : "
-									+ today.getMinutes() + "</table>");
+									+ year + "/" + month + "/" + day + " " + hour
+									+ ":" + minute + "</table>");
 		}
 
 		var chat = document.getElementById("chatbox");
@@ -145,13 +160,21 @@
 	});
 
 	function chatSend() {
+		var today = new Date();
+		var year = today.getFullYear();
+		var month = ('0' + (today.getMonth() + 1)).slice(-2);
+		var day = ('0' + today.getDate()).slice(-2);
+		var hour = ('0' + today.getHours()).slice(-2);
+		var minute = ('0' + today.getMinutes()).slice(-2);
+		
 		$.ajax({
 			url : "${pageContext.request.contextPath}/delivery/insertChat.do",
 			type : "POST",
 			data : {
-				senderUsername : $("#senderUsername").val(),
-				receiverUsername : $("#receiverUsername").val(),
-				content : $("#content").val()
+				'username' : $("#senderUsername").val(),
+				'content' : $("#content").val(),
+				'chatDate' : year + "/" + month + "/" + day + " " + hour + ":" + minute,
+				'roomId' : $("#roomId").val()
 			},
 			dataType : "json",
 			success : function(result) {
@@ -226,53 +249,66 @@
 						<span class="align-middle"
 							style="display: table-cell; text-align: center;">${receiverUsername}
 							님 과의 대화</span>
-							<input type="hidden" id="senderUsername" value="${senderUsername}">
-							<input type="hidden" id="receiverUsername" value="${receiverUsername}">
-						<!-- 						 <span class="align-middle" -->
-						<%-- 							style="display: table-cell; padding: 0 0 0 20px;">${receiver}님 --%>
-						<!-- 							과의 대화</span>  -->
-						<!-- <a href="message_list.jsp">DM리스트</a> -->
-						<a href="/delivery/message.do" class="button text-white"
+						<input type="hidden" id="senderUsername" value="${senderUsername}">
+						<input type="hidden" id="receiverUsername" value="${receiverUsername}">
+						<input type="hidden" id="roomId" value="${roomId}">
+						<input type="hidden" id="chatDate">
+						<a href="/delivery/chatList.do" class="button text-white"
 							style="display: table-cell; padding: 15px; font-size: 20px">DM리스트</a>
 					</div>
 					<div class="chatbox" id="chatbox"
 						style="overflow-y: auto; overflow-x: hidden;">
 						<c:set var="chatVal" value="chatVal" />
-						<c:if test="${empty chatList && chatVal ne false}">
-							<br><div style="text-align: center;">
-							<div
-								style="display: inline-block; text-align: center; font-size: 25px; border: 2px solid #585858; border-radius: 50px; padding: 10px 30px 10px 30px;">
-								${receiverUsername} 님과 대화를 시작해보세요!</div></div>
-						</c:if>
+<%-- 						<c:if test="${empty chatList && isNull eq true}"> --%>
+<!-- 							<br> -->
+<!-- 							<div style="text-align: center;"> -->
+<!-- 								<div -->
+<!-- 									style="display: inline-block; text-align: center; font-size: 25px; border: 2px solid #585858; border-radius: 50px; padding: 10px 30px 10px 30px;"> -->
+<%-- 									${receiverUsername} 님과 대화를 시작해보세요!</div> --%>
+<!-- 							</div> -->
+<%-- 						</c:if> --%>
+						
+						<c:forEach var="list" items="${chatList}">
+							<script>
+								function showSavedChat() {
+									var blank = "<br>";
+									for (var i = 0; i < Math.floor("${list.content}".length / 17); i++) {
+										blank += "<br><br>";
+									}
+
+									if ("${list.username}" == $("#senderUsername").val()) {
+										$("#chatbox")
+												.append(
+														"<table>"
+																+ "<label for=\"myMessage\" class=\"float-right\">나</label>"
+																+ "<br><div class=\"d-inline-flex p-2 bg-light text-dark float-right\" id=\"myMessage\" style=\"max-width:60%\; border-radius:10px\;\">"
+																+ "${list.content}" + "</div>" + blank
+																+ "<div class=\"float-right\">"
+																+ "${list.chatDate}"
+																+ "</div></table>");
+									} else {
+										$("#chatbox")
+												.append(
+														"<table>"
+																+ "<label for=\"yourMessage\" class=\"float-left\">" + "${list.username}" + "</label>"
+																+ "<br><div class=\"d-inline-flex p-2 bg-secondary text-white float-left\" style=\"max-width:60%\; border-radius:10px\;\">"
+																+ "${list.content}" + "</div>" + blank
+																+ "<div class=\"float-left\">"
+																+ "${list.chatDate}"
+																+ "</div></table>");
+									}
+	
+									var chat = document.getElementById("chatbox");
+									chat.scrollTop = chat.scrollHeight;
+								}
+							</script>
+							
+							<script>
+								showSavedChat()
+							</script>
+						</c:forEach>
+
 					</div>
-
-					<%-- 					<c:forEach var="list" items="${contentList}"> --%>
-					<%-- 						<c:choose> --%>
-					<%-- 							<c:when test="${username eq list.senderUsername}"> --%>
-					<!-- 								<div class="chatbox "> -->
-					<!-- 									<div class="chatbox float-right"> -->
-					<!-- 										<label for="myMessage" class="float-right">나</label><br> -->
-					<%-- 										${list.messageDate } --%>
-					<!-- 										<div class="d-inline-flex p-2 bg-light text-dark float-right" -->
-					<%-- 											id="myMessage">${list.content}</div> --%>
-					<!-- 									</div> -->
-					<!-- 								</div> -->
-					<%-- 							</c:when> --%>
-					<%-- 							<c:otherwise> --%>
-					<!-- 								<div class="chatbox"> -->
-					<!-- 									<div class="chatbox "> -->
-					<%-- 										<label for="buyerMessage">${list.senderUsername}</label><br> --%>
-
-					<%-- 										${list.messageDate } --%>
-					<!-- 										<div -->
-					<!-- 											class="d-inline-flex p-2 bg-secondary text-white float-left" -->
-					<%-- 											id="buyerMessage">${list.content}</div> --%>
-					<!-- 									</div> -->
-					<!-- 								</div> -->
-					<%-- 							</c:otherwise> --%>
-
-					<%-- 						</c:choose> --%>
-					<%-- 					</c:forEach> --%>
 				</div>
 				<br>
 				<div class="form-group">
@@ -284,9 +320,7 @@
 						<p style="color: #E16A93">${data.message}</p>
 					</c:if>
 				</div>
-				<button id="chatSend" class="primary" type="button">Chat
-					Send</button>
-				<!-- 				<input type="submit" value="Send Message" class="primary" /> -->
+				<button id="chatSend" class="primary" type="button">Send Chat</button>
 			</div>
 		</div>
 	</div>

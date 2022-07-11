@@ -22,9 +22,8 @@ public class ChatDTO implements Serializable {
 	public ChatDTO() {
 		super();
 	}
-
-	public ChatDTO(String username, String content, String chatDate,
-			int roomId) {
+	
+	public ChatDTO(String username, String content, String chatDate, int roomId) {
 		super();
 		this.username = username;
 		this.content = content;
