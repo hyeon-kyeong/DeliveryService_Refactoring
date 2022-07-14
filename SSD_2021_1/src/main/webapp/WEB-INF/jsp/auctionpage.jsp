@@ -12,8 +12,14 @@
 			<p>
 				진행중인 경매 목록입니다. <br />
 			</p>
-
-		<a class=button href="/delivery/auctionInsert.do">경매등록 📝</a>
+			<c:choose>
+					<c:when test="${userSession.username ne null}">
+						<a class=button href="/delivery/auctionInsert.do">경매등록 📝</a>
+					</c:when>
+					<c:otherwise>
+						<a class=button href="/delivery/signon.do">경매등록 📝</a>
+					</c:otherwise>
+				</c:choose>
 		</header>
 		<section class="tiles">
 			<c:forEach var="ac" items="${ACList}">
