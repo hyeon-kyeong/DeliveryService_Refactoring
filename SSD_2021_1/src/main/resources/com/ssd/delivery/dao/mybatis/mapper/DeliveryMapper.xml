@@ -41,7 +41,7 @@
 	</select>
   
 	<select id="getDeliveryList" resultType="DeliveryDTO">
-    SELECT * FROM DELIVERY
+    SELECT * FROM DELIVERY ORDER BY DELIVERYID
 	</select>
   
   <select id="isExistingCP" resultType="DeliveryDTO">

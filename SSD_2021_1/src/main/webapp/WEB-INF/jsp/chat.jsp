@@ -22,7 +22,7 @@
 			stompClient.subscribe('/topic/greetings', function(greeting) {
 				showGreeting(JSON.parse(greeting.body).content);
 			});
-			stompClient.subscribe('/topic/chat', function(chat) {
+			stompClient.subscribe('/topic/chat/${roomId}', function(chat) {
 				console.log(chat);
 				showChat(JSON.parse(chat.body));
 			});
@@ -57,7 +57,7 @@
 				stompClient.subscribe('/topic/greetings', function(greeting) {
 					showGreeting(JSON.parse(greeting.body).content);
 				});
-				stompClient.subscribe('/topic/chat', function(chat) {
+				stompClient.subscribe('/topic/chat/${roomId}', function(chat) {
 					showChat(JSON.parse(chat.body));
 				});
 			});
@@ -87,7 +87,7 @@
 		var minute = ('0' + today.getMinutes()).slice(-2);
 		
 		if ($("#content").val() != "") {
-			stompClient.send("/app/chat", {}, JSON.stringify({
+			stompClient.send("/app/chat/${roomId}", {}, JSON.stringify({
 				'username' : $("#senderUsername").val(),
 				'content' : $("#content").val(),
 				'chatDate' : year + "/" + month + "/" + day + " " + hour + ":" + minute,

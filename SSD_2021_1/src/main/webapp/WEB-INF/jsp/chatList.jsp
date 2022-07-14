@@ -27,8 +27,9 @@
 				<div class="list-group" style="width: 500px;">
 					<c:if test="${map ne null}">
 						<c:forEach var="m" items="${map}">
-							<a href="<c:url value='/delivery/chat.do'>
+							<a href="<c:url value='/delivery/chat.do/${m.value}'>
 						   <c:param name='receiverUsername' value='${m.key}'/>
+						   <c:param name='roomId' value='${m.value}'/>
 				 		 </c:url>"
 								class="list-group-item list-group-item-action">${m.key}</a>
 						</c:forEach>

@@ -11,6 +11,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,33 +30,33 @@ public class ChatController {
 	@Autowired
 	private DeliveryImpl deliveryImpl;
 	
-	@MessageMapping("/chat")
-	@SendTo("/topic/chat")
+	@MessageMapping("/chat/{roomId}")
+	@SendTo("/topic/chat/{roomId}")
 	public ChatDTO chat(ChatDTO chat) throws Exception {
 		return new ChatDTO(chat.getUsername(), chat.getContent(), chat.getChatDate(), chat.getRoomId());
 	}
 	
-	@RequestMapping("/delivery/chat.do")
-	public ModelAndView enterChatRoom(Model model, HttpSession session, @RequestParam("receiverUsername")String receiverUsername) throws Exception {
+	@RequestMapping("/delivery/chat.do/{roomId}")
+	public ModelAndView enterChatRoom(Model model, HttpSession session, @RequestParam("receiverUsername")String receiverUsername, @PathVariable("roomId") int roomId) throws Exception {
 		
 		AccountDTO account = (AccountDTO)session.getAttribute("userSession");
 		String senderUsername = account.getUsername();
 		
-		List<Integer> roomIdSend = deliveryImpl.getRoomIdByUsername(senderUsername);
-		List<Integer> roomIdReceive = deliveryImpl.getRoomIdByUsername(receiverUsername);
-		
-		int roomId = -1;
-		if (roomIdSend != null && roomIdReceive != null) {
-			for (int s : roomIdSend) {
-				for (int r : roomIdReceive) {
-					if (s == r) {
-						roomId = s;
-						break;
-					}
-				}
-			}
-		}
-		
+//		List<Integer> roomIdSend = deliveryImpl.getRoomIdByUsername(senderUsername);
+//		List<Integer> roomIdReceive = deliveryImpl.getRoomIdByUsername(receiverUsername);
+//		
+//		int roomId = -1;
+//		if (roomIdSend != null && roomIdReceive != null) {
+//			for (int s : roomIdSend) {
+//				for (int r : roomIdReceive) {
+//					if (s == r) {
+//						roomId = s;
+//						break;
+//					}
+//				}
+//			}
+//		}
+		System.out.println(roomId);
 		List<ChatDTO> chatList = deliveryImpl.getChatListByRoomId(roomId);
 		
 		ModelAndView mav = new ModelAndView();
@@ -76,7 +77,7 @@ public class ChatController {
 	}
 
 	@RequestMapping("/delivery/createChatRoom.do")
-	public ModelAndView createChatRoom(HttpSession session, @RequestParam("receiverUsername") String receiverUsername) throws Exception {
+	public String createChatRoom(HttpSession session, @RequestParam("receiverUsername") String receiverUsername) throws Exception {
 		AccountDTO account = (AccountDTO)session.getAttribute("userSession");
 
 		String username = account.getUsername();
@@ -113,7 +114,7 @@ public class ChatController {
 		mav.addObject("roomId", roomId);
 		mav.setViewName("chat");
 
-		return mav;
+		return "redirect:/delivery/chat.do/" + roomId;
 	}
 	
 	@RequestMapping("/delivery/chatList.do")
@@ -124,18 +125,13 @@ public class ChatController {
 		ModelAndView mav = new ModelAndView();
 		List<Integer> roomId = deliveryImpl.getRoomIdByUsername(username);
 
-		Map<String, String> map = new HashMap<>();
+		Map<String, Integer> map = new HashMap<>();
 		for (int id : roomId) {
 			List<ChatRoomJoinDTO> userList = deliveryImpl.getChatUserListByRoomId(id);
-			List<ChatDTO> chatList = deliveryImpl.getChatListByRoomId(id);
-			
-			String chat = "";
-			if (chatList.size() != 0) 
-				chat = chatList.get(chatList.size() - 1).getContent();
 
 			for (ChatRoomJoinDTO user : userList) {
 				if (!user.getUsername().equals(username)) {
-					map.put(user.getUsername(), chat);
+					map.put(user.getUsername(), id);
 				}
 			}
 		}
