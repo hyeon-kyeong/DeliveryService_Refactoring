@@ -25,16 +25,15 @@
 				</div>
 				<div class="col-12">
 					<label for="address2">도착지</label> <input type="text"
-						name="address2" id="address2" value="${delivery.address2 }"
+						name="address2" id="address2" value="${delivery.address2}"
 						placeholder="도착 가능 지역을 작성해주세요." />
 					<form:errors path="address2" style="color:#E16A93; font-size:28px;" />
 				</div>
 				<div class="col-12">
 					<label for="serviceDate">서비스 제공일</label> <input type="text"
-						id="serviceDate" name="serviceDate" class="form-control"
-						placeholder="2021/01/01">
-					<form:errors path="serviceDate"
-						style="color:#E16A93; font-size:28px;" />
+						name="serviceDate" id="serviceDate" value="${delivery.serviceDate}"
+						placeholder="2022/01/01" />
+					<form:errors path="serviceDate" style="color:#E16A93; font-size:28px;" />
 				</div>
 				<div class="col-12">
 					<label for="price">가격 (KRW) </label> <input type="text"

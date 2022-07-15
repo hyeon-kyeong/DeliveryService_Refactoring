@@ -93,7 +93,7 @@
 				</div>
 				<div class="form-group">
 					<label for="address" style="font-size: 24px">Address</label> <input
-						type="hidden" style="width: 800px" class="form-control"
+						type="text" style="width: 800px" class="form-control"
 						name="address" value="${userSession.address}">
 
 					<!-- 도로명주소 api 활용 -->
