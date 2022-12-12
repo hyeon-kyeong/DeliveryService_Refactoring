@@ -13,7 +13,7 @@ public class JpetstoreBootApplication extends SpringBootServletInitializer{
 	}
 	
 	
-    public static void main(String[] args) throws Exception { 
+    public static void main(String[] args) throws Exception {
         SpringApplication.run(JpetstoreBootApplication.class, args);
     }
 }
