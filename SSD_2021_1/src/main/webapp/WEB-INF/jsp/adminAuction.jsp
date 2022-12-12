@@ -55,8 +55,8 @@
 				 		 </c:url>"
 										class="button">&nbsp;&nbsp;&nbsp;&nbsp;Detail&nbsp;&nbsp;&nbsp;&nbsp;</a></td>
 									<td><a
-										href="<c:url value='/admin/auction/delete.do'>
-						   <c:param name='auctionId' value='${ac.auctionId}'/>
+										href="<c:url value='/admin/auction/delete.do/${ac.auctionId}'>
+<%-- 						   <c:param name='auctionId' value='${ac.auctionId}'/> --%>
 				 		 </c:url>"
 										class="button" onClick="deleteFuc()">&nbsp;&nbsp;&nbsp;&nbsp;Remove&nbsp;&nbsp;&nbsp;&nbsp;</a></td>
 								</tr>

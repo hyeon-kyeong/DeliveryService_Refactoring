@@ -3,7 +3,7 @@ package com.ssd.delivery.controller;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+//import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,7 +12,8 @@ import com.ssd.delivery.domain.CoPurchasingDTO;
 import com.ssd.delivery.domain.DeliveryDTO;
 import com.ssd.delivery.service.DeliveryFacade;
 
-@Controller
+//@Controller
+@RestController
 public class HomeController {
 	
 	private DeliveryFacade delivery;
@@ -23,7 +24,7 @@ public class HomeController {
 	
 	@GetMapping("/")
 	public ModelAndView home(Model model, HttpSession session) throws Exception {
-			
+			System.out.println(("Rest API : GET"));
 			ModelAndView mav = new ModelAndView();
 			
 			List<CoPurchasingDTO> CPList = delivery.getCPList();

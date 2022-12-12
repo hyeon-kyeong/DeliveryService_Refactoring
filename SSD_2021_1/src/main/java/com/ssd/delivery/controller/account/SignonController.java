@@ -6,23 +6,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+//import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.ssd.delivery.domain.AccountDTO;
 import com.ssd.delivery.service.DeliveryFacade;
 import com.ssd.delivery.service.Message;
 
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 
-@Controller
+@RestController
+//@Controller
 @SessionAttributes("userSession")
 @RequestMapping("/delivery/signon.do")
 public class SignonController {
@@ -35,23 +35,26 @@ public class SignonController {
 	}
 
 	@GetMapping
-	public String showForm(@ModelAttribute("accountDTO") AccountDTO accountDTO, 
-			RedirectAttributes redirectAttributes,
-			HttpServletRequest request, ModelMap model) throws Exception {
+	public ModelAndView showForm(HttpServletRequest request) throws Exception {
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("login");
 		
 		EncryptionAndHashing.initRsa(request);
 
-		return  "login";
+		return mav;
 	}
 
 	@PostMapping
-	public String handleRequest(HttpServletRequest request,
+	public ModelAndView handleRequest(HttpServletRequest request,
 			HttpSession session,
 			@RequestParam("USERNAME") String username,
 			@RequestParam("PASSWORD") String password, 
 			@RequestParam(value = "forwardAction", required = false) String forwardAction,
 			Model model) throws Exception {
 
+		ModelAndView mav = new ModelAndView();
+		
 		PrivateKey privateKey = (PrivateKey) session
 				.getAttribute(EncryptionAndHashing.getRSA_WEB_KEY());
 
@@ -73,16 +76,21 @@ public class SignonController {
 			model.addAttribute("data",
 					new Message("가입되지 않은 아이디거나 잘못된 비밀번호 입니다.", "/"));
 			EncryptionAndHashing.initRsa(request);
-			return "login";
+			
+			mav.setViewName("login");
+			
+			return mav;
 		}
 
 		model.addAttribute("userSession", account);
 
 		if (forwardAction != null) {
-			return "redirect:/" + forwardAction;
+			mav.setViewName("redirect:/" + forwardAction);
 		} else {
-			return "redirect:/";
+			mav.setViewName("redirect:/");
 		}
+		
+		return mav;
 	}
 
 }
